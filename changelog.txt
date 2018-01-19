@@ -1,0 +1,4 @@
+19/1/2018
+
+v.0.1
+-Added single blocks after each score of apple to make game harder

@@ -31,6 +31,19 @@ direction = 'RIGHT'
 changeto = direction
 score = 0
 
+###Spawn single block walls
+blockWallSpawner = []
+def spawnBlock():
+    blockPos = ([random.randrange(1,72)*10,random.randrange(1,46)*10])
+    if blockPos == foodPos or blockPos in blockWallSpawner:
+        blockPos = ([random.randrange(1, 72) * 10, random.randrange(1, 46) * 10])
+        blockWallSpawner.append(blockPos)
+    else:
+        blockWallSpawner.append(blockPos)
+
+
+
+
 def gameOver():
 
     myFont = pygame.font.SysFont('monaco', 72 )
@@ -96,6 +109,7 @@ while True:
     if snakePos[0] == foodPos[0] and snakePos[1] == foodPos[1] :
         foodSpawn = False
         score +=1
+        spawnBlock()
     else:
         snakeBody.pop()
 
@@ -113,6 +127,10 @@ while True:
     #Draw food
     pygame.draw.rect(playSurface, brown, pygame.Rect(foodPos[0], foodPos[1], 10, 10))
 
+    #Draw blocks
+    for single_block in blockWallSpawner:
+        pygame.draw.rect(playSurface, black, pygame.Rect(single_block[0],single_block[1],10,10))
+
     #Check boundires
     if snakePos[0] > 710 or snakePos[0] < 0 or snakePos[1] > 450 or snakePos[1] < 0:
         gameOver()
@@ -121,6 +139,11 @@ while True:
     for block in snakeBody[1:]:
         if snakePos[0] == block[0] and snakePos[1] == block[1]:
             quit()
+
+    #Snake block collision
+    for wall in blockWallSpawner:
+        if snakePos[0] == wall[0] and snakePos[1] == wall[1]:
+            gameOver()
 
     showScore()
     pygame.display.update()
